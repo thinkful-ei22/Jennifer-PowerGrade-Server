@@ -1,3 +1,7 @@
+// const express = require('express');
+// const app = express();
+// app.use(express.static('public'));
+// app.listen(process.env.PORT || 8080);
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
@@ -7,7 +11,7 @@ const { dbConnect } = require('./db-mongoose');
 // const {dbConnect} = require('./db-knex');
 
 const app = express();
-
+app.use(express.static('public'));
 app.use(
   morgan(process.env.NODE_ENV === 'production' ? 'common' : 'dev', {
     skip: (req, res) => process.env.NODE_ENV === 'test'
@@ -37,3 +41,4 @@ if (require.main === module) {
 }
 
 module.exports = { app };
+

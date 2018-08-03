@@ -1,0 +1,16 @@
+[
+    { 
+        "_id": "000000000000000000000000",
+        "firstName": "John",
+        "lastName": "Teacher",
+        "username":"JohnTeach",
+        "password":"password"
+    },
+    { 
+        "_id": "000000000000000000000001",
+        "firstName": "Jane",
+        "lastName": "Teacher",
+        "username":"JaneTeach",
+        "password":"password"
+    }
+]

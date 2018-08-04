@@ -1,2 +1,9 @@
 language: node_js
 node_js: node
+deploy:
+  provider: heroku
+  api_key:
+    secure: ed0kXYm5523nCJEkNOPsLK+xyfGkMgF96z8qu3AA4+iJ+Bf4nWZZ/5HXDIYq9qkr5hB+uMZtHhteq/imoHOM6TjTp9hGPc28pJOXlHekOvqQYmEHXWf3hRBpZ7/8UraKVKr/EzVo9wO7Zg5SrHrPZmvzo+aVibnKUoUu13wIdP/SmnrTzo3/rK7dTauWwpIHSHsLVd73uOwVPWr+hu3cVnYhBSz7bBsS6uJREOlhTVe4EiTPjdiHTDQDDdHgDBf3PcHOfg9plAI3Ig/CCW50AGSJktgQEANUSYK/7HkxX97s+W1n94BCXLvnL+qllEYDtjwiHV8w0wht7zAUZYRX+pqjVZb8ySFHDaFgSMs+Uvk4ydZL2WJpyfqeA3UQ0DxsIu5OLK5SngcG92dQUIcXecRw1pHhUEyrENANMJPvju7MTRx7cjqS96Ls+5BhLTya1IOSQ72o82ARYPb7h0jIpkTa7dQrvXwmxNm/uHRnBsU/dqkkQqIuo7CzkSGYbvmzptfHGDhx1mx5Zf38xz+aMtGCPtnejzSyskRtpLer9PacKPiV07mFq7Z2mbOgJKN6xVmpVSzt1jUJFVfJdZd2dxGSL+QHJJg202mLJ7ezhCU9SEktUhF5Z6PpnJTfl8Xgo5KhvrDqlO/XUdtMIePs3/HCD+g0f3Ciq5rwAPI8Rbw=
+  app: 'yes'
+  on:
+    repo: thinkful-ei22/Jennifer-PowerGrade-Server

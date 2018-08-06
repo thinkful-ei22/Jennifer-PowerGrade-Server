@@ -2,6 +2,7 @@ const express = require('express');
 const Class = require('../models/class');
 const router = express.Router();
 const passport = require('passport');
+const mongoose = require('mongoose');
 
 router.use(('/', passport.authenticate('jwt', { session: false, failWithError: true })));
 //get list of classes
@@ -67,6 +68,43 @@ router.post('/', (req, res, next) => {
         .location(`${req.originalUrl}/${result.id}`)
         .status(201)
         .json(result);
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+//update a class
+router.put('/:id', (req, res, next) => {
+  const {id} = req.params;
+  const {name, students, assignments} = req.body;
+  const userId = req.user.id;
+  const updatedClass = {
+    name,
+    students,
+    assignments,
+    userId
+  };
+  //validate id
+  if(!mongoose.Types.ObjectId.isValid(id)){
+    const err = new Error('The `id` is not valid');
+    err.status = 400;
+    return next(err);
+  }
+  if(!updatedClass.name){
+    const err = new Error('Missing `name` in request body');
+    err.status = 400;
+    return next(err);
+  }
+  //add validations for student ids and assignment ids
+  Class.findOneAndUpdate({_id:id, userId}, updatedClass, {new: true})
+    .then(result => {
+      if(result){
+        res
+          .json(result)
+          .status(200);
+      }else{
+        next();
+      }
     })
     .catch(err => {
       next(err);

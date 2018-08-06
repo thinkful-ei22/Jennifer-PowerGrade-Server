@@ -22,5 +22,23 @@ router.get('/', (req, res, next) => {
     });
 });
 
+router.get('/:id', (req, res, next) => {
+  const id = req.params.id;
+  //TODO add a search fiter and a class filter
+  return Assignment.findById(id)
+  // .populate('userId classId')
+    .then(result => {
+      console.log(result);
+      if(result){
+        res.json(result);
+      }else{
+        next();
+      }
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+
     
 module.exports = router;

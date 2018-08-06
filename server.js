@@ -9,7 +9,7 @@ const classRouter = require('./routes/classes');
 const studentRouter = require('./routes/students');
 const app = express();
 
-app.use(express.static('public'));
+// app.use(express.static('public'));
 
 app.use(
   morgan(process.env.NODE_ENV === 'production' ? 'common' : 'dev', {

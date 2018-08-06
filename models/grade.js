@@ -1,8 +1,9 @@
 const mongoose =require('mongoose');
 
 const gradeSchema = new mongoose.Schema({
-  grade:{type: Number},
-  studentId: {type: mongoose.Schema.Types.ObjectId, ref: 'Student', required: true}
+  value:{type: Number},
+  studentId: {type: mongoose.Schema.Types.ObjectId, ref: 'Student', required: true},
+  assignmentId: {type: mongoose.Schema.Types.ObjectId, ref: 'Assignment', required: true}
 });
 
 gradeSchema.set('toObject', {

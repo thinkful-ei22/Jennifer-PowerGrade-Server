@@ -4,7 +4,7 @@ const studentSchema = new mongoose.Schema({
   firstName:{type: String, required:true},
   lastName: {type: String, required:true},
   classId: [{type: mongoose.Schema.Types.ObjectId, ref: 'Class', required: true}],
-  // grades: [{type: mongoose.Schema.Types.ObjectId, ref: 'Grade'}]
+  grades: [{type: mongoose.Schema.Types.ObjectId, ref: 'Grade'}]
 });
 
 studentSchema.index({firstName: 1, lastName: 1}, {unique: true});

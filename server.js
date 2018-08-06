@@ -1,15 +1,21 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-
+const mongoose = require('mongoose');
+const passport = require('passport');
+const localStrategy = require('./passport/local');
+const jwtStrategy = require('./passport/jwt');
 const { PORT, CLIENT_ORIGIN } = require('./config');
 const { dbConnect } = require('./db-mongoose');
-const assignmentRouter = require('./routes/assignments');
-const classRouter = require('./routes/classes');
-const studentRouter = require('./routes/students');
+const assignmentRouter = require('./routes/assignmentRoute');
+const classRouter = require('./routes/classeRoute');
+const studentRouter = require('./routes/studentRoute');
+const registerRouter = require('./routes/registerRoute');
+const loginRouter = require('./routes/loginRoute');
+const gradeRouter = require('./routes/gradeRoute');
 const app = express();
 
-// app.use(express.static('public'));
+
 
 app.use(
   morgan(process.env.NODE_ENV === 'production' ? 'common' : 'dev', {
@@ -28,7 +34,11 @@ app.use(express.json());
 app.use('/api/assignments', assignmentRouter);
 app.use('/api/classes', classRouter);
 app.use('/api/students', studentRouter);
+app.use('/api', loginRouter);
+app.use('/api', registerRouter);
 
+passport.use(localStrategy);
+passport.use(jwtStrategy);
 // Custom 404 Not Found route handler
 app.use((req, res, next) => {
   const err = new Error('Not Found');

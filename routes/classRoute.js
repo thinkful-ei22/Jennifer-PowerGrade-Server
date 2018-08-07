@@ -99,7 +99,6 @@ router.put('/:id', (req, res, next) => {
     err.status = 400;
     return next(err);
   }
-  //add validations for student ids and assignment ids
   Class.findOneAndUpdate({_id:id, userId}, updatedClass, {new: true})
     .then(result => {
       if(result){

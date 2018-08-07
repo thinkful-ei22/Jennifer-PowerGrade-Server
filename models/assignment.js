@@ -4,9 +4,9 @@ const assignmentSchema = new mongoose.Schema({
   name: {type: String, required: true},
   date: {type: String, required: true}, //TODO what does a Date datatype look like for seed data?
   userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
-  classId: [{type: mongoose.Schema.Types.ObjectId, ref: 'Class', required: true}],
+  classes: [{type: mongoose.Schema.Types.ObjectId, ref: 'Class', required: true}],
   categoryId: {type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true},
-  grades: [{type: mongoose.Schema.Types.ObjectId, ref: 'Grade', required: true}]
+  grades: [{type: mongoose.Schema.Types.ObjectId, ref: 'Grade'}]
 });
 
 assignmentSchema.index({name: 1, userId: 1},{unique:true});

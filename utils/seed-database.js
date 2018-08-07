@@ -13,6 +13,7 @@ const Grade = require('../models/grade');
 const seedGrades = require('../database/seed/grades');
 const Category = require('../models/category');
 const seedCategories = require('../database/seed/categories');
+
 mongoose.connect(DATABASE_URL)
   .then(() => mongoose.connection.db.dropDatabase())
   .then(() => {

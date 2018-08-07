@@ -4,13 +4,13 @@
         "firstName": "John",
         "lastName": "Teacher",
         "username":"JohnTeach",
-        "password":"password"
+        "password":"$2a$10$gSRQAgskEg3F.yM282X1jeUGyuxTvB0DlqilnqzwKbpGEVel9C60y"
     },
     { 
         "_id": "000000000000000000000001",
         "firstName": "Jane",
         "lastName": "Teacher",
         "username":"JaneTeach",
-        "password":"password"
+        "password":"$2a$10$gSRQAgskEg3F.yM282X1jeUGyuxTvB0DlqilnqzwKbpGEVel9C60y"
     }
 ]

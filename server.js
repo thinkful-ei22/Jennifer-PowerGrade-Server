@@ -36,6 +36,7 @@ app.use('/api/classes', classRouter);
 app.use('/api/students', studentRouter);
 app.use('/api', loginRouter);
 app.use('/api', registerRouter);
+app.use('/api/grades', gradeRouter);
 
 passport.use(localStrategy);
 passport.use(jwtStrategy);

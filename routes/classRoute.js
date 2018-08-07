@@ -7,7 +7,6 @@ const mongoose = require('mongoose');
 router.use(('/', passport.authenticate('jwt', { session: false, failWithError: true })));
 //get list of classes
 router.get('/', (req, res, next) => {
-  //TODO add a search fiter and a class filter
   return Class.find()
     // .populate('userId students')
     .then(result => {
@@ -25,7 +24,6 @@ router.get('/', (req, res, next) => {
 //get one class
 router.get('/:id', (req, res, next) => {
   const id = req.params.id;
-  //TODO add a search fiter and a class filter
   return Class.findById(id)
     // .populate('userId classId')
     .then(result => {
@@ -105,6 +103,24 @@ router.put('/:id', (req, res, next) => {
       }else{
         next();
       }
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+//delete a class
+router.delete('/:id', (req, res, next) => {
+  const {id} = req.params;
+  const userId = req.user.id;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    const err = new Error('The `id` is not valid');
+    err.status = 400;
+    return next(err);
+  }
+
+  Class.findOneAndRemove({_id:id, userId})
+    .then(() => {
+      res.sendStatus(204);
     })
     .catch(err => {
       next(err);

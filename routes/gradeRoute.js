@@ -1,5 +1,7 @@
 const express = require('express');
 const Grade = require('../models/grade');
+const Assignment = require('../models/assignment');
+const Student = require('../models/student');
 const router = express.Router();
 const passport = require('passport');
 const {validateAssignmentId, validateStudentId, validateClassId} = require('./validators/gradeValidation');
@@ -101,5 +103,29 @@ router.put('/:id', (req, res, next) => {
       next(err);
     });
 });
-
+router.delete('/:id', (req, res, next) => { //will I even need this one?
+  const {id} = req.params;
+  const userId = req.user.id;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    const err = new Error('The `id` is not valid');
+    err.status = 400;
+    return next(err);
+  }
+  const removeGrade = Grade.findOneAndRemove({_id: id, userId});
+  const updateAssignments = Assignment.update(
+    {grades: id},
+    {$pull: {grades:id}}
+  );
+  const updateStudents = Student.update(
+    {grades: id},
+    {$pull: {grades:id}}
+  );
+  Promise.all([removeGrade, updateAssignments, updateStudents])
+    .then(() => {
+      res.sendStatus(204).end();
+    })
+    .catch(err => {
+      next(err);
+    });
+});
 module.exports = router;

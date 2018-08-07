@@ -1,8 +1,11 @@
 const express = require('express');
 const Class = require('../models/class');
+const Student = require('../models/student');
+const User = require('../models/user');
 const router = express.Router();
 const passport = require('passport');
 const mongoose = require('mongoose');
+const {validateStudentList, validateAssignmentList} = require('./validators/classValidation');
 
 router.use(('/', passport.authenticate('jwt', { session: false, failWithError: true })));
 //get list of classes
@@ -59,8 +62,11 @@ router.post('/', (req, res, next) => {
   if(!newClass.assignments){
     newClass.assignments=[];
   }
-  //add studentId and assignmentId validations
-  Class.create(newClass)
+  Promise.all([
+    validateAssignmentList(assignments, userId),
+    validateStudentList(students, userId)
+  ])
+    .then(()=>Class.create(newClass))
     .then(result => {
       res
         .location(`${req.originalUrl}/${result.id}`)
@@ -117,10 +123,18 @@ router.delete('/:id', (req, res, next) => {
     err.status = 400;
     return next(err);
   }
-
-  Class.findOneAndRemove({_id:id, userId})
+  const removeClass = Class.findOneAndRemove({_id: id, userId});
+  const updateUsers = User.update(
+    {classes: id},
+    {$pull: {classes:id}}
+  );
+  const updateStudents = Student.update(
+    {students: id},
+    {$pull: {students:id}}
+  );
+  Promise.all([removeClass, updateUsers, updateStudents])
     .then(() => {
-      res.sendStatus(204);
+      res.sendStatus(204).end();
     })
     .catch(err => {
       next(err);

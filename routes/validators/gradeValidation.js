@@ -1,9 +1,7 @@
 const mongoose = require('mongoose');
 const Assignment = require('../../models/assignment');
-const Grade = require('../../models/grade');
 const Student = require('../../models/student');
 const Class = require('../../models/class');
-const Category = require('../../models/category');
 
 const validateAssignmentId = function(assignmentId, userId){
 //check if the assignmentId is mongoose approved

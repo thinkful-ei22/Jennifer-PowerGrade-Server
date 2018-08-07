@@ -3,9 +3,12 @@ const Assignment = require('../models/assignment');
 const User = require('../models/user');
 const Class = require('../models/class');
 const Grade = require('../models/grade');
+const passport = require('passport');
 const router = express.Router();
 const mongoose = require('mongoose');
 const {validateCategoryId, validateClassList, validateGradeList} = require('./validators/assignmentValidation');
+
+router.use(('/', passport.authenticate('jwt', { session: false, failWithError: true })));
 
 router.get('/', (req, res, next) => {
   const {searchTerm, classId} = req.query;
@@ -21,7 +24,7 @@ router.get('/', (req, res, next) => {
     filter.classId = classId;
   }
 
-  return Assignment.find()
+  return Assignment.find(filter)
     .then(result => {
       if(result){
         res.json(result);
@@ -50,15 +53,15 @@ router.get('/:id', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-  const {name, classes, categoryId, date, grades} = req.body;
+  const {name, categoryId, date} = req.body;
   const userId = req.user.id;
   const newAssignment = {
     name,
     date,
     userId,
-    classes,
+    classes:[],
     categoryId,
-    grades
+    grades:[]
   };
   if(!newAssignment.name){
     const err = new Error('Missing `name` in request body');
@@ -70,18 +73,10 @@ router.post('/', (req, res, next) => {
     err.status = 400;
     return next(err);
   }
-  if(!newAssignment.classes){
-    const err = new Error('Missing `classes` in request body');
-    err.status = 400;
-    return next(err);
-  }
   if(!newAssignment.categoryId){
     const err = new Error('Missing `categoryId` in request body');
     err.status = 400;
     return next(err);
-  }
-  if(!newAssignment.grades){
-    newAssignment.grades=[];
   }
   Promise.all([validateCategoryId, validateClassList, validateGradeList])
     .then(() => Assignment.create(newAssignment))

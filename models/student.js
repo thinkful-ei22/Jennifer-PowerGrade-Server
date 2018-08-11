@@ -4,7 +4,7 @@ const studentSchema = new mongoose.Schema({
   firstName:{type: String, required:true},
   lastName: {type: String, required:true},
   // teachers: [{type: mongoose.Schema.Types.ObjectId, ref: 'User', unique:true}],
-  classes: [{type: mongoose.Schema.Types.ObjectId, ref: 'Class', unique:true}],
+  classes: [{type: mongoose.Schema.Types.ObjectId, ref: 'Class'}],
   grades: [{type: mongoose.Schema.Types.ObjectId, ref: 'Grade', unique:true}]
 });
 

@@ -13,6 +13,7 @@ const studentRouter = require('./routes/studentRoute');
 const registerRouter = require('./routes/registerRoute');
 const loginRouter = require('./routes/loginRoute');
 const gradeRouter = require('./routes/gradeRoute');
+const categoriesRouter = require('./routes/categoriesRoute');
 const app = express();
 
 
@@ -30,16 +31,17 @@ app.use(
 );
 
 app.use(express.json());
-
+passport.use(localStrategy);
+passport.use(jwtStrategy);
 app.use('/api/assignments', assignmentRouter);
 app.use('/api/classes', classRouter);
 app.use('/api/students', studentRouter);
-app.use('/api', loginRouter);
-app.use('/api', registerRouter);
+app.use('/api/login', loginRouter);
+app.use('/api/users', registerRouter);
 app.use('/api/grades', gradeRouter);
+app.use('/api/categories', categoriesRouter);
 
-passport.use(localStrategy);
-passport.use(jwtStrategy);
+
 // Custom 404 Not Found route handler
 app.use((req, res, next) => {
   const err = new Error('Not Found');
@@ -76,8 +78,3 @@ if (require.main === module) {
 
 module.exports = { app };
 
-
-// const express = require('express');
-// const app = express();
-// app.use(express.static('public'));
-// app.listen(process.env.PORT || 8080);

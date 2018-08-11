@@ -201,7 +201,7 @@
     },
     {
         "_id": "333333333333333333333320",
-        "name":"Commputer Science Homework",
+        "name":"Computer Science Homework",
         "date": "9/10/18",
         "userId":"000000000000000000000001",
         "classes":["222222222222222222222205"],
@@ -212,7 +212,7 @@
     },
     {
         "_id": "333333333333333333333321",
-        "name":"Commputer Science Quiz",
+        "name":"Computer Science Quiz",
         "date": "9/12/18",
         "userId":"000000000000000000000001",
         "classes":["222222222222222222222205"],
@@ -222,7 +222,7 @@
     },
     {
         "_id": "333333333333333333333322",
-        "name":"Commputer Science Test",
+        "name":"Computer Science Test",
         "date": "9/14/18",
         "userId":"000000000000000000000001",
         "classes":["222222222222222222222205"],
@@ -232,7 +232,7 @@
     },
     {
         "_id": "333333333333333333333323",
-        "name":"Commputer Science Classwork",
+        "name":"Computer Science Classwork",
         "date": "9/20/18",
         "userId":"000000000000000000000001",
         "classes":["222222222222222222222205"],

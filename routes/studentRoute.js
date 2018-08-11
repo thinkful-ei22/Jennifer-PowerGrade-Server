@@ -11,10 +11,9 @@ router.use(('/', passport.authenticate('jwt', { session: false, failWithError: t
 
 router.get('/', (req, res, next) => {
   const {searchTerm, classId} = req.query;
-  const userId = req.user.id;
-  const teachers = [userId];
 
-  let filter = {teachers};
+
+  let filter = {};
 
   if(searchTerm) {
     const re = new RegExp(searchTerm, 'i');
@@ -24,6 +23,7 @@ router.get('/', (req, res, next) => {
     filter.classId = classId;
   }
   return Student.find(filter)
+    .populate('grades classId')
     .then(result => {
       console.log(result);
       if(result){

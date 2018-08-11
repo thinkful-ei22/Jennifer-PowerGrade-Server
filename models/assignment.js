@@ -6,8 +6,7 @@ const assignmentSchema = new mongoose.Schema({
   userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
   classes: [{type: mongoose.Schema.Types.ObjectId, ref: 'Class'}],
   categoryId: {type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true},
-  grades: [{type: mongoose.Schema.Types.ObjectId, ref: 'Grade'}],
-  stateStandards: [{type: String}]
+  grades: [{type: mongoose.Schema.Types.ObjectId, ref: 'Grade'}]
 });
 
 assignmentSchema.index({name: 1, userId: 1},{unique:true});

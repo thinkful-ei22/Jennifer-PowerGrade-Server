@@ -11,7 +11,7 @@ router.use(('/', passport.authenticate('jwt', { session: false, failWithError: t
 //get list of classes
 router.get('/', (req, res, next) => {
   return Class.find()
-    // .populate('userId students')
+    .populate('userId students assignments')
     .then(result => {
       console.log(result);
       if(result){
@@ -43,13 +43,13 @@ router.get('/:id', (req, res, next) => {
 });
 //create a new class
 router.post('/', (req, res, next) => {
-  const {name, students, assignments} = req.body;
+  const {name, assignments, students} = req.body;
   const userId = req.user.id;
   const newClass = {
     name,
-    students,
+    userId,
     assignments,
-    userId
+    students
   };
   if(!newClass.name){
     const err = new Error('Missing `name` in request body');
@@ -62,12 +62,8 @@ router.post('/', (req, res, next) => {
   if(!newClass.assignments){
     newClass.assignments=[];
   }
-  Promise.all([
-    validateAssignmentList(assignments, userId),
-    validateStudentList(students, userId)
-  ])
-    .then(()=>Class.create(newClass))
-    .then(result => {
+  return Class.create(newClass)
+    .then(result =>{
       res
         .location(`${req.originalUrl}/${result.id}`)
         .status(201)

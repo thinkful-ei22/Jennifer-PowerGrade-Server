@@ -3,7 +3,7 @@ const router = express.Router();
 const passport = require('passport');
 const User = require('../models/user');
 
-router.post('/users', (req, res, next)=>{
+router.post('/', (req, res, next)=>{
   const requiredFields = ['username', 'password'];
   const missingField = requiredFields.find(field => !(field in req.body));
     

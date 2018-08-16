@@ -10,7 +10,10 @@ const {validateStudentList, validateAssignmentList} = require('./validators/clas
 router.use(('/', passport.authenticate('jwt', { session: false, failWithError: true })));
 //get list of classes
 router.get('/', (req, res, next) => {
-  return Class.find()
+  const userId = req.user.id;
+  let filter = {userId};
+
+  return Class.find(filter)
     .populate('userId students assignments')
     .then(result => {
       console.log(result);

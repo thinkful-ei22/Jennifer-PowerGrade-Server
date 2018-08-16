@@ -35,4 +35,26 @@ router.get('/:id', (req, res, next) => {
       next(err);
     });
 });
+//edit one category
+router.put('/:id', (req, res, next) => {
+  const {id} = req.params;
+  const {name, value} = req.body;
+  const updatedCategory = {
+    name,
+    value
+  };
+  Category.findOneAndUpdate({_id:id}, updatedCategory, {new:true})
+    .then(result => {
+      if(result){
+        res
+          .json(result)
+          .status(200);
+      }else{
+        next();
+      }
+    })
+    .catch(err => {
+      next(err);
+    });
+});
 module.exports = router;

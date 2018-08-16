@@ -53,15 +53,14 @@ router.get('/:id', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-  const {name, categoryId, date} = req.body;
+  const {name, date, classes, categoryId} = req.body;
   const userId = req.user.id;
   const newAssignment = {
     name,
     date,
     userId,
-    classes:[],
+    classes,
     categoryId,
-    grades:[]
   };
   if(!newAssignment.name){
     const err = new Error('Missing `name` in request body');
@@ -78,13 +77,25 @@ router.post('/', (req, res, next) => {
     err.status = 400;
     return next(err);
   }
+  if(!newAssignment.classes){
+    newAssignment.classes = [];
+  }
+  if(!newAssignment.grades){
+    newAssignment.grades = [];
+  }
+  let createdAssignment;
+
   Promise.all([validateCategoryId, validateClassList, validateGradeList])
     .then(() => Assignment.create(newAssignment))
     .then(result => {
+      createdAssignment = result;
+      return Class.update({_id: {$in: req.body.classes}}, {$push: {assignments: createdAssignment}});
+    })
+    .then(() => {
       res
-        .location(`${req.originalUrl}/${result.id}`)
+        .location(`${req.originalUrl}/${createdAssignment.id}`)
         .status(201)
-        .json(result);
+        .json(createdAssignment);
     })
     .catch(err => {
       next(err);
@@ -93,13 +104,13 @@ router.post('/', (req, res, next) => {
 
 router.put('/:id', (req, res, next) => {
   const {id} = req.params;
-  const {name, classId, categoryId, date, grades} = req.body;
+  const {name, classes, categoryId, date, grades} = req.body;
   const userId = req.user.id;
   const updatedAssignment = {
     name,
     date,
     userId,
-    classId,
+    classes,
     categoryId,
     grades
   };
@@ -116,11 +127,6 @@ router.put('/:id', (req, res, next) => {
   }
   if(!updatedAssignment.date){
     const err = new Error('Missing `date` in request body');
-    err.status = 400;
-    return next(err);
-  }
-  if(!updatedAssignment.classId){
-    const err = new Error('Missing `classId` in request body');
     err.status = 400;
     return next(err);
   }

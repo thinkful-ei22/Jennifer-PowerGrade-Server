@@ -53,17 +53,26 @@ router.post('/', (req, res, next) => {
     err.status = 400;
     return next(err);
   }
+  let createdGrade;
   Promise.all([
     validateAssignmentId(assignmentId, userId),
     validateStudentId(studentId, userId),
     validateClassId(classId, userId)
   ])
-    .then(()=>Grade.create(newGrade))
+    .then(
+      ()=>Grade.create(newGrade))
     .then(result => {
+      createdGrade = result;
+      return Student.update({_id: {$in: req.body.studentId}}, {$push: {grades: createdGrade}});
+    })
+    .then(() => {
+      return Assignment.update({_id: {$in: req.body.assignmentId}}, {$push: {grades: createdGrade}});
+    })
+    .then(()=> {
       res
-        .location(`${req.originalUrl}/${result.id}`)
+        .location(`${req.originalUrl}/${createdGrade.id}`)
         .status(201)
-        .json(result);
+        .json(createdGrade);
     })
     .catch(err => {
       next(err);

@@ -43,12 +43,11 @@ router.get('/:id', (req, res, next) => {
 });
 //create a new class
 router.post('/', (req, res, next) => {
-  const {name, assignments, students} = req.body;
+  const {name, students} = req.body;
   const userId = req.user.id;
   const newClass = {
     name,
     userId,
-    assignments,
     students
   };
   if(!newClass.name){
@@ -57,17 +56,25 @@ router.post('/', (req, res, next) => {
     return next(err);
   }
   if(!newClass.students){
-    newClass.students=[];
+    const err = new Error('Please add `students` to request body');
+    err.status = 400;
+    return next(err);
   }
   if(!newClass.assignments){
     newClass.assignments=[];
   }
+  let createdClass;
+
   return Class.create(newClass)
     .then(result =>{
+      createdClass = result;
+      return Student.update({_id: {$in: req.body.students}}, {$push: {classes: createdClass}});
+    })
+    .then(() => {
       res
-        .location(`${req.originalUrl}/${result.id}`)
+        .location(`${req.originalUrl}/${createdClass.id}`)
         .status(201)
-        .json(result);
+        .json(createdClass);
     })
     .catch(err => {
       next(err);

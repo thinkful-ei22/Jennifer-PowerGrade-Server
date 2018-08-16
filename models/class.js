@@ -7,7 +7,7 @@ const classSchema = new mongoose.Schema({
   userId:{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 });
 
-classSchema.index({name: 1, userId: 1}, {unique: true});
+// classSchema.index({name: 1, userId: 1}, {unique: true});
 
 classSchema.set('toObject', {
   virtuals: true,     // include built-in virtual `id`

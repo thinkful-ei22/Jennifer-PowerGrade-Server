@@ -89,7 +89,7 @@ router.post('/', (req, res, next) => {
     .then(() => Assignment.create(newAssignment))
     .then(result => {
       createdAssignment = result;
-      return Class.update({_id: {$in: req.body.classes}}, {$push: {assignments: createdAssignment}});
+      return Class.update({_id: {$in: req.body.classes}}, {$push: {assignments: createdAssignment}}, {multi:true});
     })
     .then(() => {
       res

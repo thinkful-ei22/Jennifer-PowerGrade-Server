@@ -71,7 +71,7 @@ router.post('/', (req, res, next) => {
   return Class.create(newClass)
     .then(result =>{
       createdClass = result;
-      return Student.update({_id: {$in: req.body.students}}, {$push: {classes: createdClass}});
+      return Student.update({_id: {$in: req.body.students}}, {$push: {classes: createdClass}}, {multi:true});
     })
     .then(() => {
       res
@@ -104,6 +104,9 @@ router.put('/:id', (req, res, next) => {
     const err = new Error('Missing `name` in request body');
     err.status = 400;
     return next(err);
+  }
+  if(!updatedClass.assignments){
+    updatedClass.assignments=[];
   }
   Class.findOneAndUpdate({_id:id, userId}, updatedClass, {new: true})
     .then(result => {

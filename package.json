@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Template for an Express backend",
   "main": "server.js",
-  "engines": {
-    "node": "10.2.1"
-  },
   "scripts": {
     "start": "nodemon server.js",
     "mocha": "mocha --exit --file test/setup.test.js '!(node_modules)/**/*test.js'",

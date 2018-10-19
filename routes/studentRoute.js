@@ -25,7 +25,6 @@ router.get('/', (req, res, next) => {
   return Student.find(filter)
     .populate('grades classId')
     .then(result => {
-      console.log(result);
       if(result){
         res.json(result);
       }else{

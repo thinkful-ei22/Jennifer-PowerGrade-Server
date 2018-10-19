@@ -11,10 +11,10 @@ router.use(('/', passport.authenticate('jwt', { session: false, failWithError: t
 //get list of classes
 router.get('/', (req, res, next) => {
   const userId = req.user.id;
-  let filter = {userId};
+  let filter = userId;
 
   return Class.find(filter)
-    .populate('userId students assignments')
+    // .populate('userId students assignments')
     .then(result => {
       console.log(result);
       if(result){
@@ -33,7 +33,6 @@ router.get('/:id', (req, res, next) => {
   return Class.findById(id)
     // .populate('userId classId')
     .then(result => {
-      console.log(result);
       if(result){
         res.json(result);
       }else{

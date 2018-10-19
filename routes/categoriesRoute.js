@@ -8,7 +8,6 @@ router.use(('/', passport.authenticate('jwt', { session: false, failWithError: t
 router.get('/', (req, res, next) => {
   return Category.find()
     .then(result => {
-      console.log(result);
       if(result){
         res.json(result);
       }else{
@@ -24,7 +23,6 @@ router.get('/:id', (req, res, next) => {
   const id = req.params.id;
   return Category.findById(id)
     .then(result => {
-      console.log(result);
       if(result){
         res.json(result);
       }else{

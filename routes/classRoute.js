@@ -14,9 +14,8 @@ router.get('/', (req, res, next) => {
   let filter = userId;
 
   return Class.find(filter)
-    // .populate('userId students assignments')
+    .populate('userId students assignments')
     .then(result => {
-      console.log(result);
       if(result){
         res.json(result);
       }else{
@@ -31,7 +30,7 @@ router.get('/', (req, res, next) => {
 router.get('/:id', (req, res, next) => {
   const id = req.params.id;
   return Class.findById(id)
-    // .populate('userId classId')
+    .populate('userId classId')
     .then(result => {
       if(result){
         res.json(result);
@@ -45,8 +44,8 @@ router.get('/:id', (req, res, next) => {
 });
 //create a new class
 router.post('/', (req, res, next) => {
-  const {name, students} = req.body;
-  const userId = req.user.id;
+  const {name, students, userId} = req.body;
+  // const userId = req.user._id;
   const newClass = {
     name,
     userId,
@@ -124,10 +123,10 @@ router.put('/:id', (req, res, next) => {
 //delete a class
 router.delete('/:id', (req, res, next) => {
   const {id} = req.params;
-  const userId = req.user.id;
+  const userId = req.user._id;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     const err = new Error('The `id` is not valid');
-    err.status = 400;
+    err.status = 400; 
     return next(err);
   }
   const removeClass = Class.findOneAndRemove({_id: id, userId});

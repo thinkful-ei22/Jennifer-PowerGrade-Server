@@ -14,7 +14,7 @@ router.get('/', (req, res, next) => {
   const {searchTerm, classId} = req.query;
   const userId = req.user.id;
 
-  let filter = {userId};
+  let filter;
 
   if (searchTerm) {
     const re = new RegExp(searchTerm, 'i');
@@ -53,8 +53,7 @@ router.get('/:id', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-  const {name, date, classes, categoryId} = req.body;
-  const userId = req.user.id;
+  const {name, date, classes, categoryId, userId} = req.body;
   const newAssignment = {
     name,
     date,
@@ -104,8 +103,7 @@ router.post('/', (req, res, next) => {
 
 router.put('/:id', (req, res, next) => {
   const {id} = req.params;
-  const {name, classes, categoryId, date, grades} = req.body;
-  const userId = req.user.id;
+  const {name, classes, categoryId, date, grades, userId} = req.body;
   const updatedAssignment = {
     name,
     date,
@@ -114,7 +112,7 @@ router.put('/:id', (req, res, next) => {
     categoryId,
     grades
   };
-  //validate id
+  // validate id
   if(!mongoose.Types.ObjectId.isValid(id)){
     const err = new Error('The `id` is not valid');
     err.status = 400;
@@ -137,6 +135,7 @@ router.put('/:id', (req, res, next) => {
   }
   Assignment.findOneAndUpdate({_id:id, userId}, updatedAssignment, {new: true})
     .then(result => {
+      console.log('FIND ONE AND UPDATE RESULT=', result);
       if(result){
         res
           .json(result)
@@ -152,7 +151,8 @@ router.put('/:id', (req, res, next) => {
 
 router.delete('/:id', (req, res, next) => {
   const {id} = req.params;
-  const userId = req.user.id;
+  console.log('ID=',id);
+  const userId = req.user._id;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     const err = new Error('The `id` is not valid');
     err.status = 400;

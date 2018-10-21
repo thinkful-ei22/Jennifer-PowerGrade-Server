@@ -23,7 +23,7 @@ router.get('/', (req, res, next) => {
   if(assignmentId){
     filter.assignmentId = assignmentId;
   }
-  return Grade.find(filter)
+  return Grade.find()
     .populate('studentId assignmentId')
     .then(results => {
       if(results){
